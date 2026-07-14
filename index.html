@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
+    <title>Mini Store SPA</title>
+</head>
+<body>
+    <main class="app-shell">
+        <header class="hero">
+            <p class="eyebrow">Single Page Application Practice</p>
+            <h1>Mini Store</h1>
+            <p class="subtitle">Switch categories without reloading the page.</p>
+        </header>
+
+        <nav id="categories" aria-label="Product categories">
+            <ul>
+                <li id="books" data-category="books">Books</li>
+                <li id="laptops" data-category="laptops">Laptops</li>
+                <li id="shoes" data-category="shoes">Shoes</li>
+            </ul>
+        </nav>
+
+        <section class="panel" aria-live="polite">
+            <div class="panel-head">
+                <h2 id="categoryTitle">Pick a category</h2>
+                <p id="categoryMeta">Choose Books, Laptops, or Shoes to see items.</p>
+            </div>
+            <div id="itemsRenderer" class="items-grid"></div>
+        </section>
+    </main>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
