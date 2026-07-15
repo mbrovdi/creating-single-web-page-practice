@@ -33,4 +33,32 @@
 
     <script src="app.js" defer></script>
 </body>
+
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", async function () {
+            try {
+                const reg = await navigator.serviceWorker.register("./sw.js");
+                await navigator.serviceWorker.ready;
+
+                // First page load may not be controlled until activation finishes.
+                if (!navigator.serviceWorker.controller) {
+                    let reloaded = false;
+                    navigator.serviceWorker.addEventListener("controllerchange", function () {
+                        if (!reloaded) {
+                            reloaded = true;
+                            window.location.reload();
+                        }
+                    });
+                }
+
+                console.log("Service worker ready:", reg.scope);
+            } catch (err) {
+                console.error("Service worker registration failed:", err);
+            }
+        });
+    } else {
+        console.warn("Service worker is not supported in this browser.");
+    }
+</script>
 </html>
