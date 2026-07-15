@@ -1,4 +1,4 @@
-const CACHE_NAME = "swdemo-v4";
+const CACHE_NAME = "swdemo-v5";
 const INDEX_URL = new URL("./index.html", self.location).href;
 const APP_ASSETS = [
     new URL("./", self.location).href,
@@ -7,7 +7,11 @@ const APP_ASSETS = [
     new URL("./app.css", self.location).href,
     new URL("./manifest.webmanifest", self.location).href,
     new URL("./icon-192.svg", self.location).href,
-    new URL("./icon-512.svg", self.location).href
+    new URL("./icon-512.svg", self.location).href,
+    new URL("./traffic-light.jsx", self.location).href,
+    new URL("./vendor/react.production.min.js", self.location).href,
+    new URL("./vendor/react-dom.production.min.js", self.location).href,
+    new URL("./vendor/babel.min.js", self.location).href
 ];
 
 self.addEventListener("install", function(event) {

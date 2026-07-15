@@ -37,12 +37,17 @@
                 <p id="featureStatus" class="feature-status">Ready. Try Wake Lock and Fullscreen on your phone.</p>
             </div>
             <div id="itemsRenderer" class="items-grid"></div>
+            <div id="traffic-light-root"></div>
         </section>
     </main>
 
+    <script src="vendor/react.production.min.js"></script>
+    <script src="vendor/react-dom.production.min.js"></script>
+    <script src="vendor/babel.min.js"></script>
+    <script type="text/babel" src="traffic-light.jsx"></script>
+
     <script src="app.js" defer></script>
 </body>
-
 <script>
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", async function () {
@@ -70,4 +75,5 @@
         console.warn("Service worker is not supported in this browser.");
     }
 </script>
+
 </html>
