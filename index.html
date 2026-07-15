@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="app.css">
     <title>Mini Store SPA</title>
 </head>
@@ -26,6 +30,11 @@
             <div class="panel-head">
                 <h2 id="categoryTitle">Pick a category</h2>
                 <p id="categoryMeta">Choose Books, Laptops, or Shoes to see items.</p>
+                <div class="feature-actions">
+                    <button id="wakeLockBtn" type="button">Enable Wake Lock</button>
+                    <button id="fullscreenBtn" type="button">Enter Fullscreen</button>
+                </div>
+                <p id="featureStatus" class="feature-status">Ready. Try Wake Lock and Fullscreen on your phone.</p>
             </div>
             <div id="itemsRenderer" class="items-grid"></div>
         </section>

@@ -1,10 +1,13 @@
-const CACHE_NAME = "swdemo-v3";
+const CACHE_NAME = "swdemo-v4";
 const INDEX_URL = new URL("./index.html", self.location).href;
 const APP_ASSETS = [
     new URL("./", self.location).href,
     INDEX_URL,
     new URL("./app.js", self.location).href,
-    new URL("./app.css", self.location).href
+    new URL("./app.css", self.location).href,
+    new URL("./manifest.webmanifest", self.location).href,
+    new URL("./icon-192.svg", self.location).href,
+    new URL("./icon-512.svg", self.location).href
 ];
 
 self.addEventListener("install", function(event) {

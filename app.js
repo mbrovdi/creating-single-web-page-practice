@@ -22,6 +22,93 @@ var categoryDescriptions = {
     shoes: 'Everyday picks from sporty to rugged.'
 };
 
+var wakeLockSentinel = null;
+
+function setFeatureStatus(message) {
+    var statusEl = document.getElementById('featureStatus');
+    if (statusEl) {
+        statusEl.innerText = message;
+    }
+}
+
+function syncFullscreenButton() {
+    var btn = document.getElementById('fullscreenBtn');
+    if (!btn) {
+        return;
+    }
+
+    btn.innerText = document.fullscreenElement ? 'Exit Fullscreen' : 'Enter Fullscreen';
+}
+
+async function toggleFullscreenMode() {
+    if (!document.documentElement.requestFullscreen) {
+        setFeatureStatus('Fullscreen API is not supported on this browser.');
+        return;
+    }
+
+    try {
+        if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+            setFeatureStatus('Fullscreen enabled.');
+        } else {
+            await document.exitFullscreen();
+            setFeatureStatus('Fullscreen disabled.');
+        }
+    } catch (err) {
+        setFeatureStatus('Fullscreen failed: ' + err.message);
+    }
+}
+
+function syncWakeLockButton() {
+    var btn = document.getElementById('wakeLockBtn');
+    if (!btn) {
+        return;
+    }
+
+    btn.innerText = wakeLockSentinel ? 'Disable Wake Lock' : 'Enable Wake Lock';
+}
+
+async function enableWakeLock() {
+    if (!('wakeLock' in navigator)) {
+        setFeatureStatus('Wake Lock API is not supported on this browser.');
+        return;
+    }
+
+    try {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+        wakeLockSentinel.addEventListener('release', function () {
+            wakeLockSentinel = null;
+            syncWakeLockButton();
+            setFeatureStatus('Wake Lock released.');
+        });
+
+        syncWakeLockButton();
+        setFeatureStatus('Wake Lock enabled. Screen will stay on.');
+    } catch (err) {
+        setFeatureStatus('Wake Lock failed: ' + err.message);
+    }
+}
+
+async function disableWakeLock() {
+    if (!wakeLockSentinel) {
+        return;
+    }
+
+    await wakeLockSentinel.release();
+    wakeLockSentinel = null;
+    syncWakeLockButton();
+    setFeatureStatus('Wake Lock disabled.');
+}
+
+async function toggleWakeLock() {
+    if (wakeLockSentinel) {
+        await disableWakeLock();
+        return;
+    }
+
+    await enableWakeLock();
+}
+
 var module = {
     renderSpecificItem: function (items) {
         var container = document.getElementById('itemsRenderer');
@@ -92,5 +179,30 @@ document.getElementById('categories').addEventListener('click', function (e) {
 window.addEventListener('hashchange', module.renderOnPageLoadURLChange);
 window.onload = function () {
     module.renderOnPageLoadURLChange();
+
+    var wakeLockBtn = document.getElementById('wakeLockBtn');
+    var fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    if (wakeLockBtn) {
+        wakeLockBtn.addEventListener('click', function () {
+            toggleWakeLock();
+        });
+    }
+
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', function () {
+            toggleFullscreenMode();
+        });
+    }
+
+    syncWakeLockButton();
+    syncFullscreenButton();
 };
+
+document.addEventListener('fullscreenchange', syncFullscreenButton);
+document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && wakeLockSentinel === null) {
+        enableWakeLock();
+    }
+});
 
